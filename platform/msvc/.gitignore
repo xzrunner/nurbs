@@ -1,0 +1,5 @@
+nurbs/
+projects/*
+
+!projects/nurbs.vcxproj
+!projects/nurbs.vcxproj.filters
