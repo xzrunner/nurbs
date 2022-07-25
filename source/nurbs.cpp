@@ -27,7 +27,7 @@ void bezier(const std::vector<sm::vec2>& ctl_pts, std::vector<sm::vec2>& polylin
 
 	auto b = dump_vec2(ctl_pts);
 	auto p = dump_vec2(polyline);
-	nlib::bezier<float, 2>(ctl_pts.size(), b.data(), polyline.size(), p.data());
+	aitn::bezier<float, 2>(ctl_pts.size(), b.data(), polyline.size(), p.data());
 
 	for (int i = 0, n = polyline.size(); i < n; ++i) 
 	{

@@ -19,7 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\external\nlib\bezier.h" />
+    <ClInclude Include="..\..\..\external\aitn\bezier.h" />
     <ClInclude Include="..\..\..\include\nurbs\nurbs.h" />
   </ItemGroup>
   <ItemGroup>
