@@ -9,5 +9,7 @@ namespace nurbs
 
 void bezier(const std::vector<sm::vec2>& ctl_pts, 
 	std::vector<sm::vec2>& polyline);
+void bspline(const std::vector<sm::vec2>& ctl_pts,
+	int order, std::vector<sm::vec2>& polyline);
 
 }

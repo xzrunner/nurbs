@@ -10,6 +10,9 @@
     <ClInclude Include="..\..\..\external\aitn\bezier.h">
       <Filter>aitn</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\external\aitn\bspline.h">
+      <Filter>aitn</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\source\nurbs.cpp" />

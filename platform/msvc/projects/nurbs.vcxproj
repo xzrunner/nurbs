@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\external\aitn\bezier.h" />
+    <ClInclude Include="..\..\..\external\aitn\bspline.h" />
     <ClInclude Include="..\..\..\include\nurbs\nurbs.h" />
   </ItemGroup>
   <ItemGroup>
