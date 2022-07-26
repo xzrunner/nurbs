@@ -46,7 +46,7 @@ void basis(int c, float t, int npts, int x[], float n[])
 
 /* calculate the first order basis functions n[i][1]	*/
 
-	for (i = 1; i<= nplusc-1; i++){
+	for (i = 0; i < nplusc; i++){
     	if (( t >= x[i]) && (t < x[i+1]))
 			temp[i] = 1;
 	    else
@@ -56,7 +56,7 @@ void basis(int c, float t, int npts, int x[], float n[])
 /* calculate the higher order basis functions */
 
 	for (k = 2; k <= c; k++){
-    	for (i = 1; i <= nplusc-k; i++){
+    	for (i = 0; i < nplusc-k; i++){
         	if (temp[i] != 0)    /* if the lower order basis function is zero skip the calculation */
            		d = ((t-x[i])*temp[i])/(x[i+k-1]-x[i]);
 	        else
@@ -71,13 +71,13 @@ void basis(int c, float t, int npts, int x[], float n[])
 		}
 	}
 
-	if (t == (float)x[nplusc]){		/*    pick up last point	*/
- 		temp[npts] = 1;
+	if (t == (float)x[nplusc - 1]){		/*    pick up last point	*/
+ 		temp[npts - 1] = 1;
 	}
 
 /* put in n array	*/
 
-	for (i = 1; i <= npts; i++) {
+	for (i = 0; i < npts; i++) {
     	n[i] = temp[i];
 	}
 }
@@ -98,16 +98,14 @@ void knot(int n, int c,  int x[])
 	int nplusc, nplus2, i;
 
 	nplusc = n + c;
-	nplus2 = n + 2;
+	nplus2 = n + 1;
 
-	x[1] = 0;
-	for (i = 2; i <= nplusc; i++)
-	{
-		if ((i > c) && (i < nplus2)) {
+	x[0] = 0;
+	for (i = 1; i < nplusc; i++) {
+		if ((i >= c) && (i < nplus2))
 			x[i] = x[i - 1] + 1;
-		} else {
+		else
 			x[i] = x[i - 1];
-		}
 	}
 }
 
@@ -151,11 +149,11 @@ void bspline(int npts, int k, int p1, float b[], float p[])
 
 /*  zero and redimension the knot vector and the basis array */
 
-	for(i = 0; i <= npts; i++){
+	for(i = 0; i < npts; i++){
 		 nbasis[i] = 0.;
 	}
 
-	for(i = 0; i <= nplusc; i++){
+	for(i = 0; i < nplusc; i++){
 		 x[i] = 0.;
 		}
 
@@ -176,12 +174,12 @@ void bspline(int npts, int k, int p1, float b[], float p[])
 /*    calculate the points on the bspline curve */
 
 	t = 0;
-	step = ((float)x[nplusc])/((float)(p1-1));
+	step = ((float)x[nplusc - 1])/((float)(p1-1));
 
-	for (i1 = 1; i1<= p1; i1++){
+	for (i1 = 0; i1< p1; i1++){
 
-		if ((float)x[nplusc] - t < 5e-6){
-			t = (float)x[nplusc];
+		if ((float)x[nplusc - 1] - t < 5e-6){
+			t = (float)x[nplusc - 1];
 		}
 
 	    basis(k,t,npts,x,nbasis);      /* generate the basis function for this value of t */
