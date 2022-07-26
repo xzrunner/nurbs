@@ -66,6 +66,7 @@ void bspline(const std::vector<sm::vec2>& ctl_pts, int order,
 	auto b = dump_vec3(ctl_pts);
 	auto p = dump_vec3(polyline);
 	aitn::bspline(ctl_pts.size(), order, polyline.size(), b.data(), p.data());
+//	aitn::bsplineu(ctl_pts.size(), order, polyline.size(), b.data(), p.data());
 
 	for (int i = 0, n = polyline.size(); i < n; ++i)
 	{
