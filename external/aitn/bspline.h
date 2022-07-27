@@ -28,12 +28,13 @@ namespace aitn
     x[]      = knot vector
 */	
 
-void basis(int c, float t, int npts, int x[], float n[])
+template <typename T>
+void basis(int c, T t, int npts, int x[], T n[])
 {
 	int nplusc;
 	int i,k;
-	float d,e;
-	float temp[36];
+	T d,e;
+	T temp[36];
 
 	nplusc = npts + c;
 
@@ -71,7 +72,7 @@ void basis(int c, float t, int npts, int x[], float n[])
 		}
 	}
 
-	if (t == (float)x[nplusc - 1]){		/*    pick up last point	*/
+	if (t == (T)x[nplusc - 1]){		/*    pick up last point	*/
  		temp[npts - 1] = 1;
 	}
 
@@ -154,17 +155,18 @@ void knotu(int n, int c, int x[])
     x[]         = array containing the knot vector
 */
 
-void bspline(int npts, int k, int p1, float b[], float p[])
+template <typename T>
+void bspline(int npts, int k, int p1, T b[], T p[])
 {
 	int i,j,icount,jcount;
 	int i1;
 	int x[30];		/* allows for 20 data points with basis function of order 5 */
 	int nplusc;
 
-	float step;
-	float t;
-	float nbasis[20];
-	float temp;
+	T step;
+	T t;
+	T nbasis[20];
+	T temp;
 
 	nplusc = npts + k;
 
@@ -195,12 +197,12 @@ void bspline(int npts, int k, int p1, float b[], float p[])
 /*    calculate the points on the bspline curve */
 
 	t = 0;
-	step = ((float)x[nplusc - 1])/((float)(p1-1));
+	step = ((T)x[nplusc - 1])/((T)(p1-1));
 
 	for (i1 = 0; i1< p1; i1++){
 
-		if ((float)x[nplusc - 1] - t < 5e-6){
-			t = (float)x[nplusc - 1];
+		if ((T)x[nplusc - 1] - t < 5e-6){
+			t = (T)x[nplusc - 1];
 		}
 
 	    basis(k,t,npts,x,nbasis);      /* generate the basis function for this value of t */
@@ -261,17 +263,18 @@ void bspline(int npts, int k, int p1, float b[], float p[])
     x[]         = array containing the knot vector
 */
 
-void bsplineu(int npts, int k, int p1, float b[], float p[])
+template <typename T>
+void bsplineu(int npts, int k, int p1, T b[], T p[])
 {
 	int i,j,icount,jcount;
 	int i1;
 	int x[30];		/* allows for 20 data points with basis function of order 5 */
 	int nplusc;
 
-	float step;
-	float t;
-	float nbasis[20];
-	float temp;
+	T step;
+	T t;
+	T nbasis[20];
+	T temp;
 
 	nplusc = npts + k;
 
@@ -302,12 +305,12 @@ void bsplineu(int npts, int k, int p1, float b[], float p[])
 /*    calculate the points on the bspline curve */
 
 	t = k - 1; /* special parameter range for periodic basis functions */
-	step = ((float)((npts)-(k - 1))) / ((float)(p1 - 1));
+	step = ((T)((npts)-(k - 1))) / ((T)(p1 - 1));
 
 	for (i1 = 0; i1< p1; i1++){
 
-		if ((float)(npts)-t < 5e-6) {
-			t = (float)((npts));
+		if ((T)(npts)-t < 5e-6) {
+			t = (T)((npts));
 		}
 
 	    basis(k,t,npts,x,nbasis);      /* generate the basis function for this value of t */
