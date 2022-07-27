@@ -1,41 +1,35 @@
-/*  Subroutine to generate a B-spline curve.
-    Copyright (c) 2000 David F. Rogers. All rights reserved.
-*/
-
 #pragma once
 
 #include "utility.h"
 
-#include <stdio.h>
-
 namespace aitn
 {
 
-/*  Subroutine to generate B-spline basis functions for open knot vectors
-	
-	Name: basis.c
+/*  Name: rbais
 	Language: C
 	Subroutines called: none
-	Book reference: p. 279
+	Book reference: Chapter 4, Sec. 4. , p 296
 
-    c        = order of the B-spline basis function
+	c        = order of the B-spline basis function
     d        = first term of the basis function recursion relation
     e        = second term of the basis function recursion relation
+	h[]	     = array containing the homogeneous weights
     npts     = number of defining polygon vertices
-    n[]      = array containing the basis functions
-               n[1] contains the basis function associated with B1 etc.
     nplusc   = constant -- npts + c -- maximum number of knot values
+    r[]      = array containing the rationalbasis functions
+               r[1] contains the basis function associated with B1 etc.
     t        = parameter value
     temp[]   = temporary array
     x[]      = knot vector
 */	
 
 template <typename T>
-void basis(int c, T t, int npts, int x[], T n[])
+void rbasis(int c, T t, int npts, int x[], T h[], T r[])
 {
 	int nplusc;
-	int i,k;
+	int i,j,k;
 	T d,e;
+	T sum;
 	T temp[36];
 
 	nplusc = npts + c;
@@ -47,16 +41,16 @@ void basis(int c, T t, int npts, int x[], T n[])
 		printf("t is %f \n", t);
 */
 
-/* calculate the first order basis functions n[i][1]	*/
+/* calculate the first order nonrational basis functions n[i]	*/
 
-	for (i = 0; i < nplusc; i++){
+	for (i = 0; i< nplusc; i++){
     	if (( t >= x[i]) && (t < x[i+1]))
 			temp[i] = 1;
 	    else
 			temp[i] = 0;
 	}
 
-/* calculate the higher order basis functions */
+/* calculate the higher order nonrational basis functions */
 
 	for (k = 2; k <= c; k++){
     	for (i = 0; i < nplusc-k; i++){
@@ -77,26 +71,41 @@ void basis(int c, T t, int npts, int x[], T n[])
 	if (t == (T)x[nplusc - 1]){		/*    pick up last point	*/
  		temp[npts - 1] = 1;
 	}
+/*
+	printf("Nonrational basis functions are \n");
+	for (i=1; i<= npts; i++){
+		printf("%f ", temp[i]);
+	}
+	printf("\n");
+*/
+/* calculate sum for denominator of rational basis functions */
 
-/* put in n array	*/
+	sum = 0.;
+	for (i = 0; i < npts; i++){
+		    sum = sum + temp[i]*h[i];
+	}
 
-	for (i = 0; i < npts; i++) {
-    	n[i] = temp[i];
+/* form rational basis functions and put in r vector */
+
+	for (i = 0; i < npts; i++){
+    	if (sum != 0){
+        	r[i] = (temp[i]*h[i])/(sum);}
+		else
+			r[i] = 0;
 	}
 }
 
-/*  Subroutine to generate a B-spline curve using an uniform open knot vector
-
-	Name: bspline.c
+/*  Name: rbspline.c
 	Language: C
-	Subroutines called: knot.c, basis.c, fmtmul.c
-	Book reference: Section 3.5, Ex. 3.4, Alg. p. 281
+	Subroutines called: knot.c, rbasis.c, fmtmul.c
+	Book reference: Chapter 4, Alg. p. 297
 
-    b[]        = array containing the defining polygon vertices
+    b[]         = array containing the defining polygon vertices
                   b[1] contains the x-component of the vertex
                   b[2] contains the y-component of the vertex
                   b[3] contains the z-component of the vertex
-    k           = order of the \bsp basis function
+	h[]			= array containing the homogeneous weighting factors 
+    k           = order of the B-spline basis function
     nbasis      = array containing the basis functions for a single value of t
     nplusc      = number of knot values
     npts        = number of defining polygon vertices
@@ -105,12 +114,12 @@ void basis(int c, T t, int npts, int x[], T n[])
                   p[2] contains the y-component of the point
                   p[3] contains the z-component of the point
     p1          = number of points to be calculated on the curve
-    t           = parameter value 0 <= t <= 1
+    t           = parameter value 0 <= t <= npts - k + 1
     x[]         = array containing the knot vector
 */
 
 template <typename T>
-void bspline(int npts, int k, int p1, T b[], T p[])
+void rbspline(int npts, int k, int p1, T b[], T h[], T p[])
 {
 	int i,j,icount,jcount;
 	int i1;
@@ -121,6 +130,7 @@ void bspline(int npts, int k, int p1, T b[], T p[])
 	T t;
 	T nbasis[20];
 	T temp;
+
 
 	nplusc = npts + k;
 
@@ -148,7 +158,7 @@ void bspline(int npts, int k, int p1, T b[], T p[])
 
 	icount = 0;
 
-/*    calculate the points on the bspline curve */
+/*    calculate the points on the rational B-spline curve */
 
 	t = 0;
 	step = ((T)x[nplusc - 1])/((T)(p1-1));
@@ -159,7 +169,7 @@ void bspline(int npts, int k, int p1, T b[], T p[])
 			t = (T)x[nplusc - 1];
 		}
 
-	    basis(k,t,npts,x,nbasis);      /* generate the basis function for this value of t */
+	    rbasis(k,t,npts,x,h,nbasis);      /* generate the basis function for this value of t */
 /*
 		printf("t = %f \n",t);
 		printf("nbasis = ");
@@ -189,15 +199,16 @@ void bspline(int npts, int k, int p1, T b[], T p[])
 	}
 }
 
-/*  Name: bsplineu.c
+/*  Name: rbsplinu.c
 	Language: C
-	Subroutines called: knotu.c, basis.c, fmtmul.c
-	Book reference: Section 3.8, Ex. 3.7, Alg. p. 282
+	Subroutines called: knotu.c, rbasis.c, fmtmul.c
+	Book reference: Chapter 4, Alg. p. 298
 
-    b[]        = array containing the defining polygon vertices
+    b[]         = array containing the defining polygon vertices
                   b[1] contains the x-component of the vertex
                   b[2] contains the y-component of the vertex
                   b[3] contains the z-component of the vertex
+	h[]			= array containing the homogeneous weighting factors 
     k           = order of the B-spline basis function
     nbasis      = array containing the basis functions for a single value of t
     nplusc      = number of knot values
@@ -207,12 +218,12 @@ void bspline(int npts, int k, int p1, T b[], T p[])
                   p[2] contains the y-component of the point
                   p[3] contains the z-component of the point
     p1          = number of points to be calculated on the curve
-    t           = parameter value 0 <= t <= 1
+    t           = parameter value 0 <= t <= npts - k + 1
     x[]         = array containing the knot vector
 */
 
 template <typename T>
-void bsplineu(int npts, int k, int p1, T b[], T p[])
+void rbsplineu(int npts, int k, int p1, T b[], T h[], T p[])
 {
 	int i,j,icount,jcount;
 	int i1;
@@ -223,6 +234,7 @@ void bsplineu(int npts, int k, int p1, T b[], T p[])
 	T t;
 	T nbasis[20];
 	T temp;
+
 
 	nplusc = npts + k;
 
@@ -236,7 +248,7 @@ void bsplineu(int npts, int k, int p1, T b[], T p[])
 		 x[i] = 0.;
 		}
 
-/* generate the uniform open knot vector */
+/* generate the uniform periodic knot vector */
 
 	knotu(npts,k,x);
 
@@ -246,22 +258,28 @@ void bsplineu(int npts, int k, int p1, T b[], T p[])
 		printf(" %d ", x[i]);
 	}
 	printf("\n");
+
+	printf("The usable parameter range is ");
+	for (i = k; i <= npts+1; i++){
+		printf(" %d ", x[i]);
+	}
+	printf("\n");
 */
 
 	icount = 0;
 
-/*    calculate the points on the bspline curve */
+/*    calculate the points on the rational B-spline curve */
 
-	t = k - 1; /* special parameter range for periodic basis functions */
-	step = ((T)((npts)-(k - 1))) / ((T)(p1 - 1));
+	t = k-1;
+	step = ((T)((npts)-(k-1)))/((T)(p1-1));	
 
 	for (i1 = 0; i1< p1; i1++){
 
-		if ((T)(npts)-t < 5e-6) {
-			t = (T)((npts));
+		if ((T)x[nplusc - 1] - t < 5e-6){
+			t = (T)x[nplusc - 1];
 		}
 
-	    basis(k,t,npts,x,nbasis);      /* generate the basis function for this value of t */
+	    rbasis(k,t,npts,x,h,nbasis);      /* generate the basis function for this value of t */
 /*
 		printf("t = %f \n",t);
 		printf("nbasis = ");
