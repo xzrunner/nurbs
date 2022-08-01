@@ -20,9 +20,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\external\aitn\bezier.h" />
+    <ClInclude Include="..\..\..\external\aitn\bezier_util.h" />
     <ClInclude Include="..\..\..\external\aitn\bspline.h" />
     <ClInclude Include="..\..\..\external\aitn\rbspline.h" />
-    <ClInclude Include="..\..\..\external\aitn\utility.h" />
+    <ClInclude Include="..\..\..\external\aitn\bspline_util.h" />
     <ClInclude Include="..\..\..\include\nurbs\nurbs.h" />
   </ItemGroup>
   <ItemGroup>

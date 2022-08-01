@@ -4,9 +4,7 @@
 
 #pragma once
 
-#include "utility.h"
-
-#include <stdio.h>
+#include "bspline_util.h"
 
 namespace aitn
 {

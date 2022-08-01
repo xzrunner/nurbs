@@ -1,6 +1,6 @@
 #pragma once
 
-#include "utility.h"
+#include "bspline_util.h"
 
 namespace aitn
 {
