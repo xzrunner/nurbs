@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\..\external\aitn\bezier.h" />
     <ClInclude Include="..\..\..\external\aitn\bezier_util.h" />
+    <ClInclude Include="..\..\..\external\aitn\bezsurf.h" />
     <ClInclude Include="..\..\..\external\aitn\bspline.h" />
     <ClInclude Include="..\..\..\external\aitn\rbspline.h" />
     <ClInclude Include="..\..\..\external\aitn\bspline_util.h" />

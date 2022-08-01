@@ -16,7 +16,13 @@
     <ClInclude Include="..\..\..\external\aitn\rbspline.h">
       <Filter>aitn</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\external\aitn\utility.h">
+    <ClInclude Include="..\..\..\external\aitn\bspline_util.h">
+      <Filter>aitn</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\external\aitn\bezier_util.h">
+      <Filter>aitn</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\external\aitn\bezsurf.h">
       <Filter>aitn</Filter>
     </ClInclude>
   </ItemGroup>
