@@ -16,13 +16,22 @@
     <ClInclude Include="..\..\..\external\aitn\rbspline.h">
       <Filter>aitn</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\external\aitn\bspline_util.h">
+    <ClInclude Include="..\..\..\external\aitn\bsp_util.h">
       <Filter>aitn</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\external\aitn\bezier_util.h">
       <Filter>aitn</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\external\aitn\bezsurf.h">
+      <Filter>aitn</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\external\aitn\bspsurf.h">
+      <Filter>aitn</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\external\aitn\rbsp_util.h">
+      <Filter>aitn</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\external\aitn\rbspsurf.h">
       <Filter>aitn</Filter>
     </ClInclude>
   </ItemGroup>

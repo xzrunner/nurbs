@@ -23,8 +23,11 @@
     <ClInclude Include="..\..\..\external\aitn\bezier_util.h" />
     <ClInclude Include="..\..\..\external\aitn\bezsurf.h" />
     <ClInclude Include="..\..\..\external\aitn\bspline.h" />
+    <ClInclude Include="..\..\..\external\aitn\bspsurf.h" />
     <ClInclude Include="..\..\..\external\aitn\rbspline.h" />
-    <ClInclude Include="..\..\..\external\aitn\bspline_util.h" />
+    <ClInclude Include="..\..\..\external\aitn\bsp_util.h" />
+    <ClInclude Include="..\..\..\external\aitn\rbspsurf.h" />
+    <ClInclude Include="..\..\..\external\aitn\rbsp_util.h" />
     <ClInclude Include="..\..\..\include\nurbs\nurbs.h" />
   </ItemGroup>
   <ItemGroup>
